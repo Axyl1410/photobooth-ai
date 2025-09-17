@@ -1,21 +1,21 @@
 # Photobooth with AI - Hand Gesture Control
 
-Hệ thống photobooth sử dụng AI để nhận diện cử chỉ tay và điều khiển camera tự động.
+An AI-powered photobooth that recognizes hand gestures and controls the camera automatically.
 
-## Tính năng
+## Features
 
-- **Hand Gesture Recognition**: Nhận diện cử chỉ tay real-time
-- **Zoom Control**: 
-  - Nắm tay → Zoom Out (1x-3x)
-  - Mở tay → Zoom In (1x-3x)
-- **Auto Capture**: 
-  - OK Sign → Tự động chuyển Mode ON và chụp 6 ảnh
-- **Mode Toggle**: 
-  - MODE: OFF → Chỉ nhận diện cử chỉ, không chụp
-  - MODE: ON → Chụp ảnh tự động
-- **Real-time UI**: Hiển thị Zoom level, Mode, Gesture hiện tại
+- **Hand Gesture Recognition**: Real-time hand gesture detection
+- **Zoom Control**:
+  - Fist → Zoom Out (1x-3x)
+  - Open palm → Zoom In (1x-3x)
+- **Auto Capture**:
+  - OK/Peace Sign → Automatically switch Mode ON and capture 6 photos
+- **Mode Toggle**:
+  - MODE: OFF → Only recognizes gestures, no capture
+  - MODE: ON → Automatically captures photos
+- **Real-time UI**: Displays Zoom level, Mode, and current Gesture
 
-## Cài đặt
+## Setup
 
 ### Backend (AI Service)
 
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Backend sẽ chạy tại: `http://localhost:8000`
+Backend runs at: `http://localhost:8000`
 
 ### Frontend
 
@@ -35,68 +35,70 @@ npm install
 npm run dev
 ```
 
-Frontend sẽ chạy tại: `http://localhost:5173`
+Frontend runs at: `http://localhost:5173`
 
-## Cách sử dụng
+## Usage
 
-1. **Khởi động hệ thống**:
-   - Chạy backend trước: `python ai-service/main.py`
-   - Chạy frontend: `npm run dev` (trong thư mục frontend)
+1. **Start the system**:
 
-2. **Điều khiển bằng cử chỉ tay**:
-   - **Nắm tay**: Giảm zoom (tối thiểu 1x)
-   - **Mở tay**: Tăng zoom (tối đa 3x)
-   - **OK Sign**: Tự động chuyển Mode ON và chụp 6 ảnh
+   - Start backend first: `python ai-service/main.py`
+   - Start frontend: `npm run dev` (inside the frontend directory)
 
-3. **Điều khiển thủ công**:
-   - Nhấn button "MODE: ON/OFF" để chuyển đổi chế độ
-   - Mode OFF: Chỉ nhận diện cử chỉ, không chụp ảnh
-   - Mode ON: Tự động chụp ảnh với countdown
+2. **Control with hand gestures**:
 
-## Luồng hoạt động
+   - **Fist**: Decrease zoom (min 1x)
+   - **Open palm**: Increase zoom (max 3x)
+   - **OK/Peace Sign**: Auto switch Mode ON and capture 6 photos
 
-1. **Khởi tạo**: Camera bắt đầu nhận diện tay, Mode mặc định là OFF
-2. **Zoom Control**: Sử dụng nắm tay/mở tay để điều chỉnh zoom
-3. **Capture**: 
-   - Cách 1: Làm OK sign → Tự động chuyển Mode ON và chụp 6 ảnh
-   - Cách 2: Nhấn button MODE ON → Chụp ảnh thủ công
-4. **Selection**: Chọn 3 ảnh đẹp nhất từ 6 ảnh đã chụp
-5. **Composition**: Tạo ảnh tổng hợp với filter
-6. **Download**: Tải về kết quả cuối cùng
+3. **Manual control**:
+   - Click the "MODE: ON/OFF" button to toggle mode
+   - Mode OFF: Only detection, no photo capture
+   - Mode ON: Auto capture with countdown
 
-## Cấu trúc dự án
+## Workflow
+
+1. **Initialization**: Camera starts detecting hands, default Mode is OFF
+2. **Zoom Control**: Use fist/open palm to adjust zoom
+3. **Capture**:
+   - Method 1: Make OK/peace sign → auto switch to Mode ON and capture 6 photos
+   - Method 2: Click MODE ON button → manual capture flow
+4. **Selection**: Pick the best 3 photos from the 6 captured
+5. **Composition**: Create a composite image with filters
+6. **Download**: Download the final result
+
+## Project Structure
 
 ```
 photobooth-with-ai/
 ├── ai-service/
-│   ├── main.py              # FastAPI backend với WebSocket
+│   ├── main.py              # FastAPI backend with WebSocket
 │   ├── requirements.txt     # Python dependencies
-│   └── hands-demo.py        # Demo gốc (không dùng)
+│   └── hands-demo.py        # Original demo (not used)
 ├── frontend/
 │   ├── src/
-│   │   ├── App.tsx         # React frontend chính
+│   │   ├── App.tsx         # Main React frontend
 │   │   └── ...
 │   └── package.json
 └── README.md
 ```
 
-## Hiệu suất
+## Performance
 
-- **Real-time**: WebSocket connection cho độ trễ thấp
-- **Smooth**: Camera stream mượt mà 30 FPS
-- **Accurate**: Nhận diện cử chỉ chính xác với MediaPipe
-- **Stable**: Tự động reconnect khi mất kết nối
+- **Real-time**: Low-latency WebSocket connection
+- **Smooth**: 30 FPS camera stream
+- **Accurate**: Reliable gesture detection with MediaPipe
+- **Stable**: Auto-reconnect on connection loss
 
 ## Troubleshooting
 
-1. **Camera không hoạt động**: Kiểm tra quyền truy cập camera
-2. **WebSocket lỗi**: Đảm bảo backend đang chạy tại port 8000
-3. **Gesture không nhận diện**: Đảm bảo tay trong khung hình và đủ ánh sáng
-4. **Performance chậm**: Giảm quality trong backend hoặc tăng hardware
+1. **Camera not working**: Check camera permissions
+2. **WebSocket error**: Ensure backend is running on port 8000
+3. **Gestures not recognized**: Keep your hand in frame with good lighting
+4. **Slow performance**: Lower image quality in backend or upgrade hardware
 
-## Lưu ý
+## Notes
 
-- Cần camera để hoạt động
-- Đảm bảo ánh sáng đủ để nhận diện tay
-- Tốt nhất sử dụng tay phải (có thể điều chỉnh trong code)
-- Hệ thống tự động lưu ảnh vào thư mục `captured_images/`
+- A camera is required
+- Ensure adequate lighting for gesture detection
+- Prefer using the right hand (adjustable in code)
+- Photos are automatically saved to the `captured_images/` directory
